@@ -1,0 +1,4 @@
+service vendor.qti.audiovibrator /vendor/bin/hw/vendor.qti.hardware.audiovibrator.service
+    class hal
+    user system
+    group system input

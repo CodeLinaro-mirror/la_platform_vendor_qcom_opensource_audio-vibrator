@@ -61,7 +61,6 @@ static struct pal_stream_attributes stream_attributes;
 static struct pal_device *pal_devices;
 static pal_stream_handle_t *pal_stream_handle_;
 uint8_t HapticsState = 2;
-uint8_t Offeffect;
 
 int32_t HapticsSetParameters(uint32_t param_mode, pal_param_haptics_cnfg_t payload);
 
@@ -172,14 +171,12 @@ exit:
 void AudioVibrator::offEffect() {
     int status = 0;
 
-    Offeffect = 1;
     if (pal_stream_handle_) {
        HapticsWait();
        if (!ActiveUsecase && pal_stream_handle_) {
           status = StopHapticsStream();
        }
     }
-    Offeffect = 0;
     OffThrdCreated = false;
     ALOGD("Offeffect exit");
 }
@@ -263,7 +260,7 @@ int32_t HapticsSetParameters(uint32_t param_mode, pal_param_haptics_cnfg_t paylo
 int32_t AudioVibrator::StreamHapticsCallback (uint64_t *stream_handle,
                 uint32_t event_id, uint32_t *event_data, uint32_t event_size, uint64_t cookie)
 {
-     int32_t status = 0;
+    int32_t status = 0;
     ALOGE("event received from DSP %d", *event_data);
     Eventcv.notify_all();
     HapticsState = *event_data;
@@ -317,10 +314,8 @@ ndk::ScopedAStatus AudioVibrator::getCapabilities(int32_t* _aidl_return) {
 ndk::ScopedAStatus AudioVibrator::off() {
     int ret = 0;
 
-    ALOGE("AudioVibrator off %d",Offeffect);
+    ALOGE("AudioVibrator off ");
     ret = offCurrentEffect();
-    if (Offeffect != 0)
-        goto exit;
 
     cv.notify_all();
     ActiveUsecase = false;

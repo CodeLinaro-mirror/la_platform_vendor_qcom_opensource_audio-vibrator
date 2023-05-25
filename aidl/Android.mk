@@ -1,3 +1,11 @@
+ENABLE_AUDIO_VIB := true
+ifeq ($(TARGET_USES_QMAA), true)
+ifneq ($(TARGET_USES_QMAA_OVERRIDE_AUDIO), true)
+ENABLE_AUDIO_VIB := false
+endif
+endif
+
+ifeq ($(ENABLE_AUDIO_VIB), true)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -53,3 +61,4 @@ LOCAL_SHARED_LIBRARIES := \
     android.hardware.vibrator-V2-ndk_platform
 
 include $(BUILD_EXECUTABLE)
+endif # ENABLE_AUDIO_VIB

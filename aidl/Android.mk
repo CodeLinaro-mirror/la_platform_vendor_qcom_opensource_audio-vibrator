@@ -11,7 +11,7 @@ include $(CLEAR_VARS)
 
 LOCAL_C_INCLUDES += vendor/qcom/opensource/pal/inc
 LOCAL_C_INCLUDES += vendor/qcom/proprietary/args/
-LOCAL_MODULE := vendor.qti.hardware.audiovibrator.impl
+LOCAL_MODULE := vendor.qti.hardware.vibrator.impl
 LOCAL_CFLAGS        := $(COMMON_CFLAGS) -Wall -Werror
 LOCAL_VENDOR_MODULE := true
 LOCAL_SRC_FILES := \
@@ -35,6 +35,8 @@ LOCAL_SHARED_LIBRARIES := \
     android.hardware.vibrator-V2-ndk_platform \
     libpalclient
 
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+
 LOCAL_EXPORT_C_INCLUDE_DIRS += $(LOCAL_PATH)/include
 
 include $(BUILD_SHARED_LIBRARY)
@@ -43,7 +45,7 @@ include $(CLEAR_VARS)
 
 LOCAL_USE_VNDK := true
 
-LOCAL_MODULE := vendor.qti.hardware.audiovibrator.service
+LOCAL_MODULE := vendor.qti.hardware.vibrator.service
 LOCAL_CFLAGS        := $(COMMON_CFLAGS) -Wall -Werror
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_VENDOR_MODULE := true
@@ -57,7 +59,7 @@ LOCAL_SHARED_LIBRARIES := \
     libutils \
     libbase \
     libbinder_ndk \
-    vendor.qti.hardware.audiovibrator.impl \
+    vendor.qti.hardware.vibrator.impl \
     android.hardware.vibrator-V2-ndk_platform
 
 include $(BUILD_EXECUTABLE)

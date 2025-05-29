@@ -32,7 +32,7 @@ LOCAL_SHARED_LIBRARIES := \
     liblog \
     libsoc_helper \
     libbinder_ndk \
-    android.hardware.vibrator-V2-ndk_platform \
+    android.hardware.vibrator-V2-ndk \
     libpalclient
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
@@ -60,7 +60,7 @@ LOCAL_SHARED_LIBRARIES := \
     libbase \
     libbinder_ndk \
     vendor.qti.hardware.vibrator.impl \
-    android.hardware.vibrator-V2-ndk_platform
+    android.hardware.vibrator-V2-ndk
 
 include $(BUILD_EXECUTABLE)
 endif # ENABLE_AUDIO_VIB

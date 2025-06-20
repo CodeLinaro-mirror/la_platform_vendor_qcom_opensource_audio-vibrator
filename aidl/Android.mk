@@ -5,6 +5,7 @@ ENABLE_AUDIO_VIB := false
 endif
 endif
 
+ifeq ($(TARGET_BOARD_PLATFORM), vienna)
 ifeq ($(ENABLE_AUDIO_VIB), true)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
@@ -64,3 +65,4 @@ LOCAL_SHARED_LIBRARIES := \
 
 include $(BUILD_EXECUTABLE)
 endif # ENABLE_AUDIO_VIB
+endif # TARGET_BOARD_PLATFORM

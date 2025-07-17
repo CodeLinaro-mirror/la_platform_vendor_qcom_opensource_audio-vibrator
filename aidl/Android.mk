@@ -5,13 +5,14 @@ ENABLE_AUDIO_VIB := false
 endif
 endif
 
+ifeq ($(TARGET_BOARD_PLATFORM), vienna)
 ifeq ($(ENABLE_AUDIO_VIB), true)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_C_INCLUDES += vendor/qcom/opensource/pal/inc
 LOCAL_C_INCLUDES += vendor/qcom/proprietary/args/
-LOCAL_MODULE := vendor.qti.hardware.audiovibrator.impl
+LOCAL_MODULE := vendor.qti.hardware.vibrator.impl
 LOCAL_CFLAGS        := $(COMMON_CFLAGS) -Wall -Werror
 LOCAL_VENDOR_MODULE := true
 LOCAL_SRC_FILES := \
@@ -32,8 +33,10 @@ LOCAL_SHARED_LIBRARIES := \
     liblog \
     libsoc_helper \
     libbinder_ndk \
-    android.hardware.vibrator-V2-ndk_platform \
+    android.hardware.vibrator-V2-ndk \
     libpalclient
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_EXPORT_C_INCLUDE_DIRS += $(LOCAL_PATH)/include
 
@@ -43,7 +46,7 @@ include $(CLEAR_VARS)
 
 LOCAL_USE_VNDK := true
 
-LOCAL_MODULE := vendor.qti.hardware.audiovibrator.service
+LOCAL_MODULE := vendor.qti.hardware.vibrator.service
 LOCAL_CFLAGS        := $(COMMON_CFLAGS) -Wall -Werror
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_VENDOR_MODULE := true
@@ -57,8 +60,9 @@ LOCAL_SHARED_LIBRARIES := \
     libutils \
     libbase \
     libbinder_ndk \
-    vendor.qti.hardware.audiovibrator.impl \
-    android.hardware.vibrator-V2-ndk_platform
+    vendor.qti.hardware.vibrator.impl \
+    android.hardware.vibrator-V2-ndk
 
 include $(BUILD_EXECUTABLE)
 endif # ENABLE_AUDIO_VIB
+endif # TARGET_BOARD_PLATFORM

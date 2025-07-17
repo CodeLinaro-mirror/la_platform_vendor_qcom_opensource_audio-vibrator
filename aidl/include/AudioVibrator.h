@@ -36,10 +36,17 @@
 
 #include <aidl/android/hardware/vibrator/BnVibrator.h>
 #include <thread>
+
 namespace aidl {
 namespace android {
 namespace hardware {
 namespace vibrator {
+
+struct haptics_effect_config_t {
+    size_t size;
+    uint32_t duration;
+    uint8_t *data;
+};
 
 class AudioVibrator : public BnVibrator {
 public:
@@ -54,14 +61,22 @@ public:
     static std::condition_variable cv;
     static std::condition_variable Eventcv;
     static std::thread OffThread;
-
+    static std::atomic<bool> CalThrdCreated;
+    static std::vector<haptics_effect_config_t> PcmEffectInfo;
     static bool OffThrdCreated;
     static bool ActiveUsecase;
-
+    enum haptics_mode_t {
+        HAPTICS_HOSTLESS,
+        HAPTICS_STREAMING,
+    } haptics_mode_t;
+    static bool inComposition;
     int on(int32_t timeoutMs);
     void offEffect();
     void HapticsWait();
+    void HapticsCalibThread();
     void HapticsWaitTillWaveformComp();
+    void HapticsPCMRead();
+    bool IsPCMSupported(int effectID);
     int32_t StopHapticsStream();
     int32_t offCurrentEffect();
     static int32_t StreamHapticsCallback(uint64_t *stream_handle,
@@ -98,7 +113,9 @@ public:
     ndk::ScopedAStatus composePwle(const std::vector<PrimitivePwle> &composite,
                                const std::shared_ptr<IVibratorCallback> &callback) override;
 private:
-    int play(int effectId, int strength, long *playLengthMs, uint32_t timeoutMs);
+    int play(int effectId, int strength, long* playLengthMs, uint32_t timeoutMs, bool isCompose, float amplitude);
+    void composePlayThread(const std::vector<CompositeEffect>& composite,
+        const std::shared_ptr<IVibratorCallback>& callback);
 };
 
 }  // namespace vibrator
